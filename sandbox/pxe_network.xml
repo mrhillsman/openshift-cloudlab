@@ -1,0 +1,6 @@
+<network>
+  <name>pxe_network</name>
+  <forward mode='nat' />
+  <dns enable='no'/>
+  <ip address='192.168.0.1' netmask='255.255.255.0' />
+</network>
