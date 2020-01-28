@@ -1,0 +1,31 @@
+$ORIGIN local.lab.
+$TTL 10800      ; 3 hours
+@       3600 IN SOA sns.dns.icann.org. noc.dns.icann.org. (
+                                2019010101 ; serial
+                                7200       ; refresh (2 hours)
+                                3600       ; retry (1 hour)
+                                1209600    ; expire (2 weeks)
+                                3600       ; minimum (1 hour)
+                                )
+
+
+_etcd-server-ssl._tcp.os.local.lab. 8640 IN    SRV 0 10 2380 etcd-0.os.local.lab.
+_etcd-server-ssl._tcp.os.local.lab. 8640 IN    SRV 0 10 2380 etcd-1.os.local.lab.
+_etcd-server-ssl._tcp.os.local.lab. 8640 IN    SRV 0 10 2380 etcd-2.os.local.lab.
+
+api.os.local.lab.              A 192.168.0.1
+api-int.os.local.lab.          A 192.168.0.1
+os-bootstrap.local.lab.        A 192.168.0.2
+
+os-master0.local.lab.    A 192.168.0.50
+etcd-0.os.local.lab.      IN  CNAME os-master0.local.lab.
+os-master1.local.lab.    A 192.168.0.51
+etcd-1.os.local.lab.      IN  CNAME os-master1.local.lab.
+os-master2.local.lab.    A 192.168.0.52
+etcd-2.os.local.lab.      IN  CNAME os-master2.local.lab.
+os-worker0.local.lab.    A 192.168.0.100
+os-worker1.local.lab.    A 192.168.0.101
+os-worker2.local.lab.    A 192.168.0.102
+
+$ORIGIN apps.os.local.lab.
+*    A    192.168.0.1
