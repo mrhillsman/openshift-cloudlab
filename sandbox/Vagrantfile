@@ -1,0 +1,222 @@
+# -*- mode: ruby -*-
+# vi: set ft=ruby :
+
+Vagrant.configure("2") do |config|
+  config.vm.define :bootstrap do |bootstrap|
+    bootstrap.vm.provider :libvirt do |lv|
+      lv.mgmt_attach = false
+      lv.memory = "8192"
+      lv.cpus = "8"
+      #lv.storage :file, :device => 'vda', :size => '100G', :type => 'qcow2', :allow_existing => true, :path => 'lab_bootstrap-vda.qcow2'
+      lv.storage :file, :device => 'vda', :size => '100G', :type => 'qcow2'
+      #lv.storage :file, :device => :cdrom, :path => '/var/lib/libvirt/images/rhcos-44.81.202001030903.0-installer.x86_64.iso'
+      lv.boot 'hd'
+      #lv.boot 'cdrom'
+      lv.boot 'network'
+      lv.machine_arch = 'x86_64'
+      #lv.initrd = '/users/openlab/matchbox/examples/assets/rhcos-43.81.201912030353.0-installer-initramfs.x86_64.img'
+      #lv.kernel = '/users/openlab/matchbox/examples/assets/rhcos-43.81.201912030353.0-installer-kernel-x86_64'
+      #lv.cmd_line = 'console=tty0 console=ttyS0 115200n8 console=ttyS1 115200n8 rd.neednet=1 coreos.inst=yes coreos.inst.image_url=http://matchbox.local.lab:8080/assets/rhcos-43.81.201912030353.0-qemu.x86_64.qcow2.gz coreos.inst.install_dev=vda coreos.inst.ignition_url=http://matchbox.local.lab:8080/ignition?mac=08:00:27:3d:80:00'
+      #lv.qemuargs :value => "-fw_cfg"
+      #lv.qemuargs :value => "name=opt/com.coreos/config,file=/tmp/baremetal/bootstrap.ign"
+      #lv.tpm_model = 'tpm-tis'
+      #lv.tpm_type = 'passthrough'
+      #lv.tpm_path = '/dev/tpm0'
+    end
+
+    bootstrap.vm.hostname = "os-bootstrap"
+    bootstrap.vm.network :private_network,
+      :ip => "192.168.0.2",
+      :mac => "08:00:27:3d:80:00",
+      :libvirt__netmask => "255.255.255.0",
+      :libvirt__network_name => "pxe_network"
+  end
+
+  config.vm.define :m0 do |m0|
+    m0.vm.provider :libvirt do |lv|
+      lv.mgmt_attach = false
+      lv.memory = "8192"
+      lv.cpus = "8"
+      #lv.storage :file, :device => 'vda', :size => '100G', :type => 'qcow2', :allow_existing => true, :path => 'lab_m0-vda.qcow2'
+      lv.storage :file, :device => 'vda', :size => '100G', :type => 'qcow2'
+      #lv.storage :file, :device => :cdrom, :path => '/var/lib/libvirt/images/rhcos-44.81.202001030903.0-installer.x86_64.iso'
+      lv.boot 'hd'
+      #lv.boot 'cdrom'
+      lv.boot 'network'
+      lv.machine_arch = 'x86_64'
+      #lv.qemuargs :value => "-fw_cfg"
+      #lv.qemuargs :value => "name=opt/com.coreos/config,file=/tmp/baremetal/master.ign"
+    end
+
+    m0.vm.hostname = "os-master0"
+    m0.vm.network :private_network,
+      :ip => "192.168.0.50",
+      :mac => "08:00:27:3d:80:32",
+      :libvirt__netmask => "255.255.255.0",
+      :libvirt__network_name => "pxe_network"
+  end
+
+  config.vm.define :m1 do |m1|
+    m1.vm.provider :libvirt do |lv|
+      lv.mgmt_attach = false
+      lv.memory = "8192"
+      lv.cpus = "8"
+      #lv.storage :file, :device => 'vda', :size => '100G', :type => 'qcow2', :allow_existing => true, :path => 'lab_m1-vda.qcow2'
+      lv.storage :file, :device => 'vda', :size => '100G', :type => 'qcow2'
+      #lv.storage :file, :device => :cdrom, :path => '/var/lib/libvirt/images/rhcos-44.81.202001030903.0-installer.x86_64.iso'
+      lv.boot 'hd'
+      #lv.boot 'cdrom'
+      lv.boot 'network'
+      lv.machine_arch = 'x86_64'
+      #lv.qemuargs :value => "-fw_cfg"
+      #lv.qemuargs :value => "name=opt/com.coreos/config,file=/tmp/baremetal/master.ign"
+    end
+
+    m1.vm.hostname = "os-master1"
+    m1.vm.network :private_network,
+      :ip => "192.168.0.51",
+      :mac => "08:00:27:3d:80:33",
+      :libvirt__netmask => "255.255.255.0",
+      :libvirt__network_name => "pxe_network"
+  end
+
+  config.vm.define :m2 do |m2|
+    m2.vm.provider :libvirt do |lv|
+      lv.mgmt_attach = false
+      lv.memory = "8192"
+      lv.cpus = "8"
+      #lv.storage :file, :device => 'vda', :size => '100G', :type => 'qcow2', :allow_existing => true, :path => 'lab_m2-vda.qcow2'
+      lv.storage :file, :device => 'vda', :size => '100G', :type => 'qcow2'
+      #lv.storage :file, :device => :cdrom, :path => '/var/lib/libvirt/images/rhcos-44.81.202001030903.0-installer.x86_64.iso'
+      lv.boot 'hd'
+      #lv.boot 'cdrom'
+      lv.boot 'network'
+      lv.machine_arch = 'x86_64'
+      #lv.qemuargs :value => "-fw_cfg"
+      #lv.qemuargs :value => "name=opt/com.coreos/config,file=/tmp/baremetal/master.ign"
+    end
+
+    m2.vm.hostname = "os-master2"
+    m2.vm.network :private_network,
+      :ip => "192.168.0.52",
+      :mac => "08:00:27:3d:80:34",
+      :libvirt__netmask => "255.255.255.0",
+      :libvirt__network_name => "pxe_network"
+  end
+
+  config.vm.define :w0 do |w0|
+    w0.vm.provider :libvirt do |lv|
+      lv.mgmt_attach = false
+      lv.memory = "16384"
+      lv.cpus = "16"
+      #lv.storage :file, :device => 'vda', :size => '100G', :type => 'qcow2', :allow_existing => true, :path => 'lab_w0-vda.qcow2'
+      lv.storage :file, :device => 'vda', :size => '100G', :type => 'qcow2'
+      #lv.storage :file, :device => :cdrom, :path => '/var/lib/libvirt/images/rhcos-44.81.202001030903.0-installer.x86_64.iso'
+      lv.boot 'hd'
+      #lv.boot 'cdrom'
+      lv.boot 'network'
+      lv.machine_arch = 'x86_64'
+      #lv.qemuargs :value => "-fw_cfg"
+      #lv.qemuargs :value => "name=opt/com.coreos/config,file=/tmp/baremetal/worker.ign"
+    end
+
+    w0.vm.hostname = "os-worker0"
+    w0.vm.network :private_network,
+      :ip => "192.168.0.100",
+      :mac => "08:00:27:3d:90:32",
+      :libvirt__netmask => "255.255.255.0",
+      :libvirt__network_name => "pxe_network"
+  end
+
+  config.vm.define :w1 do |w1|
+    w1.vm.provider :libvirt do |lv|
+      lv.mgmt_attach = false
+      lv.memory = "16384"
+      lv.cpus = "16"
+      #lv.storage :file, :device => 'vda', :size => '100G', :type => 'qcow2', :allow_existing => true, :path => 'lab_w1-vda.qcow2'
+      lv.storage :file, :device => 'vda', :size => '100G', :type => 'qcow2'
+      #lv.storage :file, :device => :cdrom, :path => '/var/lib/libvirt/images/rhcos-44.81.202001030903.0-installer.x86_64.iso'
+      lv.boot 'hd'
+      #lv.boot 'cdrom'
+      lv.boot 'network'
+      lv.machine_arch = 'x86_64'
+      #lv.qemuargs :value => "-fw_cfg"
+      #lv.qemuargs :value => "name=opt/com.coreos/config,file=/tmp/baremetal/worker.ign"
+    end
+
+    w1.vm.hostname = "os-worker1"
+    w1.vm.network :private_network,
+      :ip => "192.168.0.101",
+      :mac => "08:00:27:3d:90:33",
+      :libvirt__netmask => "255.255.255.0",
+      :libvirt__network_name => "pxe_network"
+  end
+
+  config.vm.define :w2 do |w2|
+    w2.vm.provider :libvirt do |lv|
+      lv.mgmt_attach = false
+      lv.memory = "16384"
+      lv.cpus = "16"
+      #lv.storage :file, :device => 'vda', :size => '100G', :type => 'qcow2', :allow_existing => true, :path => 'lab_w2-vda.qcow2'
+      lv.storage :file, :device => 'vda', :size => '100G', :type => 'qcow2'
+      #lv.storage :file, :device => :cdrom, :path => '/var/lib/libvirt/images/rhcos-44.81.202001030903.0-installer.x86_64.iso'
+      lv.boot 'hd'
+      #lv.boot 'cdrom'
+      lv.boot 'network'
+      lv.machine_arch = 'x86_64'
+      #lv.qemuargs :value => "-fw_cfg"
+      #lv.qemuargs :value => "name=opt/com.coreos/config,file=/tmp/baremetal/worker.ign"
+    end
+
+    w2.vm.hostname = "os-worker2"
+    w2.vm.network :private_network,
+      :ip => "192.168.0.102",
+      :mac => "08:00:27:3d:90:34",
+      :libvirt__netmask => "255.255.255.0",
+      :libvirt__network_name => "pxe_network"
+  end
+
+#  config.vm.define :nfs do |nfs|
+#    nfs.vm.provider :libvirt do |lv|
+#      lv.mgmt_attach = false
+#      lv.memory = "4096"
+#      lv.cpus = "4"
+#      lv.storage :file, :device => 'vda', :size => '120G', :type => 'qcow2', :allow_existing => true
+#      lv.boot 'hd'
+#      lv.machine_arch = 'x86_64'
+#    end
+#
+#    nfs.vm.hostname = "os-nfs0"
+#    nfs.vm.network :private_network,
+#      :ip => "192.168.0.202",
+#      :mac => "08:00:27:3e:00:32",
+#      :libvirt__netmask => "255.255.255.0",
+#      :libvirt__network_name => "pxe_network"
+#  end
+
+#  config.vm.define :w3 do |w3|
+#    w3.vm.provider :libvirt do |lv|
+#      lv.mgmt_attach = false
+#      lv.memory = "16384"
+#      lv.cpus = "16"
+#      #lv.kernel = "/var/lib/libvirt/images/rhcos-44.81.202001030903.0-installer-kernel-x86_64"
+#      #lv.storage :file, :device => 'vda', :size => '100G', :type => 'qcow2', :allow_existing => true, :path => 'lab_w3-vda.qcow2'
+#      #lv.storage :file, :device => :cdrom, :path => '/var/lib/libvirt/images/rhcos-44.81.202001030903.0-installer.x86_64.iso'
+#      lv.storage :file, :device => 'vda', :size => '100G', :type => 'qcow2'
+#      lv.boot 'hd'
+#      lv.boot 'network'
+#      lv.machine_arch = 'x86_64'
+#      #lv.boot 'cdrom'
+#      #lv.cmd_line = 'console=tty0 console=ttyS0 115200n8 console=ttyS1 115200n8 rd.neednet=1 coreos.inst=yes coreos.inst.image_url=http://192.168.0.1:8080/assets/rhcos-44.81.202001030903.0-metal.x86_64.raw.gz coreos.inst.install_dev=vda coreos.inst.ignition_url=http://192.168.0.1:8080/ignition?mac=08:00:27:3d:90:35'
+#      #lv.qemuargs :value => "-fw_cfg"
+#      #lv.qemuargs :value => "name=opt/com.coreos/config,file=/tmp/baremetal/worker.ign"
+#    end
+#
+#    w3.vm.hostname = "os-worker3"
+#    w3.vm.network :private_network,
+#      :ip => "192.168.0.103",
+#      :mac => "08:00:27:3d:90:35",
+#      :libvirt__netmask => "255.255.255.0",
+#      :libvirt__network_name => "pxe_network"
+#  end
+end
