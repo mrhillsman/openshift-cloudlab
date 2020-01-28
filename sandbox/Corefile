@@ -1,0 +1,12 @@
+.:53 {
+    log
+    errors
+    forward . 128.104.222.8 128.104.222.9
+}
+
+local.lab:53 {
+    log
+    errors
+    file /etc/coredns/db.local.lab
+    debug
+}
