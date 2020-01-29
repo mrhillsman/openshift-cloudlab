@@ -1,0 +1,66 @@
+{
+  "PXE_NETWORK_CIDR": "192.168.0.0/24",
+  "MATCHBOX_IP": "192.168.0.1",
+  "HOST_IP": "192.168.0.1",
+  "BOOTSTRAP_IP": "192.168.0.2",
+  "BOOTSTRAP_MAC": "08:00:27:3d:70:e2",
+  "BOOTSTRAP_IPMI_USER": "admin",
+  "BOOTSTRAP_IPMI_PASS": "password",
+  "BOOTSTRAP_IPMI_PORT": 10010,
+  "MASTERS": [
+    {
+      "MASTER_IP": "192.168.0.50",
+      "MASTER_MAC": "08:00:27:3d:80:00",
+      "MASTER_IPMI_USER": "admin",
+      "MASTER_IPMI_PASS": "password",
+      "MASTER_IPMI_PORT": 10050
+    },
+    {
+      "MASTER_IP": "192.168.0.50",
+      "MASTER_MAC": "08:00:27:3d:80:01",
+      "MASTER_IPMI_USER": "admin",
+      "MASTER_IPMI_PASS": "password",
+      "MASTER_IPMI_PORT": 10051
+    },
+    {
+      "MASTER_IP": "192.168.0.50",
+      "MASTER_MAC": "08:00:27:3d:80:02",
+      "MASTER_IPMI_USER": "admin",
+      "MASTER_IPMI_PASS": "password",
+      "MASTER_IPMI_PORT": 10052
+    }
+  ],
+  "WORKERS": [
+    {
+      "WORKER_IP": "192.168.0.100",
+      "WORKER_MAC": "08:00:27:3d:90:00",
+      "WORKER_IPMI_USER": "admin",
+      "WORKER_IPMI_PASS": "password",
+      "WORKER_IPMI_PORT": 10100
+    },
+    {
+      "WORKER_IP": "192.168.0.101",
+      "WORKER_MAC": "08:00:27:3d:90:01",
+      "WORKER_IPMI_USER": "admin",
+      "WORKER_IPMI_PASS": "password",
+      "WORKER_IPMI_PORT": 10101
+    },
+    {
+      "WORKER_IP": "192.168.0.102",
+      "WORKER_MAC": "08:00:27:3d:90:02",
+      "WORKER_IPMI_USER": "admin",
+      "WORKER_IPMI_PASS": "password",
+      "WORKER_IPMI_PORT": 10102
+    }
+  ],
+  "INSTALLER": "https://mirror.openshift.com/pub/openshift-v4/clients/ocp-dev-preview/latest-4.4/openshift-install-linux-4.4.0-0.nightly-2020-01-29-175627.tar.gz",
+  "CLIENT": "https://mirror.openshift.com/pub/openshift-v4/clients/ocp-dev-preview/latest-4.4/openshift-client-linux-4.4.0-0.nightly-2020-01-29-175627.tar.gz",
+  "OS_INITRD": "https://mirror.openshift.com/pub/openshift-v4/dependencies/rhcos/latest/latest/rhcos-4.3.0-x86_64-installer-initramfs.img",
+  "OS_KERNEL": "https://mirror.openshift.com/pub/openshift-v4/dependencies/rhcos/latest/latest/rhcos-4.3.0-x86_64-installer-kernel",
+  "OS_IMAGE": "https://mirror.openshift.com/pub/openshift-v4/dependencies/rhcos/latest/latest/rhcos-4.3.0-x86_64-metal.raw.gz",
+  "PULL_SECRET": "",
+  "SSH_KEY": "",
+  "CLUSTER_DOMAIN": "local.lab",
+  "CLUSTER_NAME": "os"
+  
+}
