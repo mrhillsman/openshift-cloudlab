@@ -13,11 +13,11 @@ while [ $? != 0 ]; do sleep 10; ./oc patch configs.imageregistry.operator.opensh
 #### If you used the NFS yamls
 4.3+
 ```
-while [ $? != 0 ]; do sleep 10; ./oc patch configs.imageregistry.operator.openshift.io cluster --type merge --patch '{"spec":{"managementState":"Managed","storage":{"pvc":{"claim":{}}}}}'; done;
+while [ $? != 0 ]; do sleep 10; ./oc patch configs.imageregistry.operator.openshift.io cluster --type merge --patch '{"spec":{"managementState":"Managed","storage":{"pvc":{"claim":""}}}}'; done;
 ```
 4.2-
 ```
-while [ $? != 0 ]; do sleep 10; ./oc patch configs.imageregistry.operator.openshift.io cluster --type merge --patch '{"spec":{"storage":{"pvc":{"claim":{}}}}}'; done;
+while [ $? != 0 ]; do sleep 10; ./oc patch configs.imageregistry.operator.openshift.io cluster --type merge --patch '{"spec":{"storage":{"pvc":{"claim":""}}}}'; done;
 ```
 
 ### Approve CSRs
