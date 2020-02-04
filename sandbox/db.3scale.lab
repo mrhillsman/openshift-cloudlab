@@ -1,0 +1,15 @@
+$origin lab.
+*	IN	A	192.168.0.1
+
+$origin 3scale.lab.
+$ttl 38400
+3scale.lab.	IN	SOA	ns.3scale.lab. admin.3scale.lab. (
+			1580234637
+			10800
+			3600
+			604800
+			38400 )
+3scale.lab.	IN	NS	ns.3scale.lab.
+ns.3scale.lab.	IN	A	192.168.0.1
+3scale.lab.	IN	A	192.168.0.1
+*	IN	A	192.168.0.1
