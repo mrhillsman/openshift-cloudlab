@@ -22,13 +22,17 @@ sed -e 's/\s*\([\+0-9a-zA-Z]*\).*/\1/' << EOF | sudo fdisk /dev/sda
 EOF
 
 # create partition on sdb
-sudo parted -s -a opt -- /dev/sdb mklabel gpt mkpart primary ext4 1MiB 100%
+sudo parted -s -a opt -- /dev/sdb mklabel gpt mkpart primary ext4 1MiB 50%
+sudo parted -s -a opt -- /dev/sdb mkpart primary ext4 50% 100%
 sudo mkfs.ext4 /dev/sdb1
+sudo mkfs.ext4 /dev/sdb2
 #TODO get the UUID of /dev/sdb1 and add it to fstab
 DEV_SDB1_UUID=$(sudo blkid -o value -s UUID /dev/sdb1)
+DEV_SDB2_UUID=$(sudo blkid -o value -s UUID /dev/sdb2)
 cat /etc/fstab > fstab
 cat << EOF >> fstab
 UUID=${DEV_SDB1_UUID}    /var/lib/libvirt/images    ext4    defaults    0    0
+UUID=${DEV_SDB2_UUID}    /tmp/nfs    ext4    defaults    0    0
 EOF
 sudo mv fstab /etc/fstab
 
@@ -52,13 +56,13 @@ ACTION=="add", SUBSYSTEM=="module", KERNEL=="br_netfilter", RUN+="/lib/systemd/s
 EOF
 sudo mv 99-bridge.rules /etc/udev/rules.d/
 
-cat << EOF >> 99-bridge.conf
-net.bridge.bridge-nf-call-ip6tables = 0
-net.bridge.bridge-nf-call-iptables = 0
-net.bridge.bridge-nf-call-arptables = 0
-EOF
-sudo mv 99-bridge.conf /etc/sysctl.d/
-sudo sysctl -p /etc/sysctl.d/99-bridge.conf
+#cat << EOF >> 99-bridge.conf
+#net.bridge.bridge-nf-call-ip6tables = 0
+#net.bridge.bridge-nf-call-iptables = 0
+#net.bridge.bridge-nf-call-arptables = 0
+#EOF
+#sudo mv 99-bridge.conf /etc/sysctl.d/
+#sudo sysctl -p /etc/sysctl.d/99-bridge.conf
 
 echo "net.ipv4.ip_forward = 1" | sudo tee /etc/sysctl.d/99-ipforward.conf
 sudo sysctl -p /etc/sysctl.d/99-ipforward.conf
@@ -79,7 +83,7 @@ sudo bash -c 'python <(curl -sk https://bootstrap.pypa.io/get-pip.py)'
 ## virtualization
 sudo apt install -y qemu-kvm libvirt-daemon libvirt-daemon-system network-manager \
 qemu libvirt-clients ebtables dnsmasq-base haproxy expect software-properties-common \
-libxslt-dev libxml2-dev libvirt-dev zlib1g-dev ruby-dev ipmitool ipmiutil \
+libxslt-dev libxml2-dev libvirt-dev zlib1g-dev ruby-dev jq ipmitool ipmiutil \
 cockpit cockpit-docker cockpit-packagekit cockpit-machines dnsmasq uidmap
 
 cat << EOF > cockpit.conf
@@ -88,7 +92,7 @@ AllowUnencrypted = true
 EOF
 
 sudo mv cockpit.conf /etc/cockpit/cockpit.conf
-systemctl restart cockpit.service
+sudo systemctl restart cockpit.service
 
 ## virtualbmc
 sudo pip install virtualbmc
