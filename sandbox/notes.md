@@ -80,8 +80,8 @@ WantedBy=multi-user.target
 Environment="MATCHBOX_ADDRESS=0.0.0.0:8080"
 Environment="MATCHBOX_RPC_ADDRESS=0.0.0.0:8081"
 Environment="MATCHBOX_WEB_SSL=false"
-Environment="MATCHBOX_WEB_CERT_FILE=/etc/matchbox/server.crt"
-Environment="MATCHBOX_WEB_KEY_FILE=/etc/matchbox/server.key"
+Environment="MATCHBOX_WEB_CERT_FILE=/etc/matchbox/tls/server.crt"
+Environment="MATCHBOX_WEB_KEY_FILE=/etc/matchbox/tls/server.key"
 Environment="MATCHBOX_LOG_LEVEL=debug"
 ```
 
