@@ -207,8 +207,8 @@ end
 ```
 
 #### get github repos
-git clone https://github.com/mrhillsman/baremetal-upi-sandbox
-git clone https://github.com/mrhillsman/upi-rt
+git clone https://github.com/mrhillsman/baremetal-upi-sandbox  
+git clone https://github.com/mrhillsman/upi-rt  
 
 #### change CLUSTER_DOMAIN, CLUSTER_NAME, PULL_SECRET, and SSH_KEY
 
@@ -218,6 +218,7 @@ for libvirt, no box pxe is ideal, quicker, less disk usage however network confi
 
 
 #### haproxy on the host /etc/haproxy/haproxy.cfg
+```
 global
         debug
 
@@ -255,6 +256,7 @@ backend api
     
     
 #### should we create an NFS server for image registry
+```
 
 ```
 cat /etc/containers/registries.conf
