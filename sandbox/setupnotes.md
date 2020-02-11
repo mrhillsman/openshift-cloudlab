@@ -5,7 +5,7 @@ __#TODO automation of cloudlab experiment deployment and server hostname returne
 
 We are going to use an Ansible playbook for ease of use and organization. We need to install Ansible then download and run the playbook.
 
-#### Perform as root user:
+#### Perform as openlab user:
 
 ```
 # re-partition sda to use all space
@@ -102,16 +102,16 @@ sudo usermod -aG libvirt openlab
 
 # install upstream golang
 #TODO check for version programmatically
-wget https://dl.google.com/go/go1.13.5.linux-amd64.tar.gz
-sudo tar -C /usr/local -xzf go1.13.5.linux-amd64.tar.gz
+wget https://dl.google.com/go/go1.13.7.linux-amd64.tar.gz
+sudo tar -C /usr/local -xzf go1.13.7.linux-amd64.tar.gz
 mkdir ~/go
 # add these so they are set on login
 export GOPATH=$HOME/go
 export PATH=$PATH:/usr/local/go/bin
 
 # get coredns binaries
-wget https://github.com/coredns/coredns/releases/download/v1.6.6/coredns_1.6.6_linux_amd64.tgz
-tar xzf coredns_1.6.6_linux_amd64.tgz
+wget https://github.com/coredns/coredns/releases/download/v1.6.7/coredns_1.6.7_linux_amd64.tgz
+tar xzf coredns_1.6.7_linux_amd64.tgz
 sudo mv coredns /usr/local/bin
 
 # get matchbox binaries
@@ -120,21 +120,18 @@ tar xzf matchbox-v0.8.3-linux-amd64.tar.gz
 sudo mv matchbox-v0.8.3-linux-amd64/matchbox /usr/local/bin
 
 # get terraform binaries
-wget https://releases.hashicorp.com/terraform/0.12.18/terraform_0.12.18_linux_amd64.zip
-unzip terraform_0.12.18_linux_amd64.zip
+wget https://releases.hashicorp.com/terraform/0.12.20/terraform_0.12.20_linux_amd64.zip
+unzip terraform_0.12.20_linux_amd64.zip
 sudo mv terraform /usr/local/bin
 
 wget https://raw.githubusercontent.com/Bash-it/bash-it/master/completion/available/virsh.completion.bash
 sudo mv virsh.completion.bash /etc/bash_completion.d/virsh
 
-# change to root user
-sudo -i
-
 # install upstream vagrant and vagrant-libvirt
 #TODO check for version programmatically
-sudo -u openlab wget -v https://releases.hashicorp.com/vagrant/2.2.6/vagrant_2.2.6_x86_64.deb
-sudo -u openlab dpkg -i vagrant_2.2.6_x86_64.deb
-sudo -u openlab vagrant plugin install vagrant-libvirt
+sudo wget -v https://releases.hashicorp.com/vagrant/2.2.7/vagrant_2.2.7_x86_64.deb
+sudo dpkg -i vagrant_2.2.7_x86_64.deb
+sudo vagrant plugin install vagrant-libvirt
 
 # get openshift binaries (this should be relevant to the version of openshift you want to install)
 #TODO check for version programmatically
@@ -147,7 +144,8 @@ sudo mv kubectl oc openshift-install /usr/local/bin
 ```
 
 ### Extra Notes
-# setup the pxe_network
+#### setup the pxe_network
+```
 cat << EOF >> pxe_network.xml
 <network>
   <name>pxe_network</name>
@@ -158,7 +156,10 @@ EOF
 virsh net-define pxe_network.xml
 virsh net-autostart pxe_network
 virsh net-start pxe_network
+```
 
+#### create Vagrantfile
+```
 # matchbox domain
 # -*- mode: ruby -*-
 # vi: set ft=ruby :
@@ -203,19 +204,20 @@ Vagrant.configure("2") do |config|
       :libvirt__network_name => "pxe_network"
   end
 end
+```
 
-# get github repos
+#### get github repos
 git clone https://github.com/mrhillsman/baremetal-upi-sandbox
 git clone https://github.com/mrhillsman/upi-rt
 
-# change CLUSTER_DOMAIN, CLUSTER_NAME, PULL_SECRET, and SSH_KEY
+#### change CLUSTER_DOMAIN, CLUSTER_NAME, PULL_SECRET, and SSH_KEY
 
-# NOTES
+### NOTES
 we need to be able to get the first IP of the pxe_network to set it in resolv.conf for matchbox node
 for libvirt, no box pxe is ideal, quicker, less disk usage however network config does not work...so how does it pxe?
 
 
-# haproxy on the host /etc/haproxy/haproxy.cfg
+#### haproxy on the host /etc/haproxy/haproxy.cfg
 global
         debug
 
@@ -252,7 +254,7 @@ backend api
     server master0 192.168.0.50:6443 check
     
     
-# should we create an NFS server for image registry
+#### should we create an NFS server for image registry
 
 ```
 cat /etc/containers/registries.conf
@@ -282,7 +284,7 @@ registries = []
 registries = []
 ```
 
-### create the default storage pool
+#### create the default storage pool
 
 virsh pool-define-as guest_images dir - - - - "/guest_images"
 virsh pool-build guest_images
