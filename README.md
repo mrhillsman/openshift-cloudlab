@@ -1,2 +1,2 @@
-# openshift-cloudlab
-Deploy OpenShift on CloudLab
+# openshift-lab
+OpenShift on Single Server
