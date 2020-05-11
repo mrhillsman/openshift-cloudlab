@@ -2,7 +2,7 @@ cluster_domain = "centos.lab"
 cluster_id= "os"
 
 matchbox_client_cert = "/etc/matchbox/tls/client.crt"
-matchbox_client_key = "/etc/matchbox/tls/lclient.key"
+matchbox_client_key = "/etc/matchbox/tls/client.key"
 matchbox_http_endpoint = "http://192.168.0.1:8080"
 matchbox_rpc_endpoint = "192.168.0.1:8081"
 matchbox_trusted_ca_cert = "/etc/matchbox/tls/ca.crt"
