@@ -1,0 +1,91 @@
+global
+    log         127.0.0.1 local2
+    chroot      /var/lib/haproxy
+    pidfile     /var/run/haproxy.pid
+    maxconn     4000
+    user        haproxy
+    group       haproxy
+    daemon
+
+defaults
+    mode                    http
+    log                     global
+    option                  httplog
+    option                  dontlognull
+    option forwardfor       except 127.0.0.0/8
+    option                  redispatch
+    retries                 3
+    timeout http-request    10s
+    timeout queue           1m
+    timeout connect         10s
+    timeout client          300s
+    timeout server          300s
+    timeout http-keep-alive 10s
+    timeout check           10s
+    maxconn                 20000
+
+listen stats
+    bind :9000
+    mode http
+    stats enable
+    stats hide-version
+    stats realm Haproxy\ Statistics
+    stats uri /haproxy_stats
+    stats auth admin:admin
+
+frontend kubernetes_api
+    bind 192.168.0.1:6443
+    default_backend kubernetes_api
+    mode tcp
+    option tcplog
+
+backend kubernetes_api
+    balance roundrobin
+    mode tcp
+    option ssl-hello-chk
+    server bootstrap 192.168.0.2:6443
+    server master0 192.168.0.50:6443
+    server master1 192.168.0.51:6443
+    server master2 192.168.0.52:6443
+
+frontend machine_config
+    bind 192.168.0.1:22623
+    default_backend machine_config
+    mode tcp
+    option tcplog
+
+backend machine_config
+    balance roundrobin
+    mode tcp
+    option ssl-hello-chk
+    server bootstrap 192.168.0.2:22623
+    server master0 192.168.0.50:22623
+    server master1 192.168.0.51:22623
+    server master2 192.168.0.52:22623
+
+frontend router_https
+    bind 0.0.0.0:443
+    default_backend router_https
+    mode tcp
+    option tcplog
+
+backend router_https
+    balance source
+    mode tcp
+    option ssl-hello-chk
+    server worker0 192.168.0.100:443 check
+    server worker1 192.168.0.101:443 check
+    server worker2 192.168.0.102:443 check
+
+frontend router_http
+    mode tcp
+    option tcplog
+    bind 0.0.0.0:80
+    default_backend router_http
+
+backend router_http
+    mode tcp
+    balance source
+    server worker0 192.168.0.100:80 check
+    server worker1 192.168.0.101:80 check
+    server worker2 192.168.0.102:80 check
